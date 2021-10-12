@@ -28,12 +28,26 @@ describe('app routes', () => {
       return client.end(done);
     });
 
+    test('gets a todo', async() => {
+
+      const expectation = [];
+      
+
+      const data = await fakeRequest(app)
+        .get('/api/todo')
+        .expect('Content-Type', /json/)
+        .set('Authorization', token)
+        .expect(200);
+
+      expect(data.body).toEqual(expectation);
+    });   
+
 
     test('posts an item for todo list', async() => {
 
       const expectation = [
         {
-          id: expect.any(Number),
+          id: 5,
           chore: 'get a new bike',
           completed: false,
           owner_id: expect.any(Number),
@@ -47,7 +61,7 @@ describe('app routes', () => {
           chore: 'get a new bike',
         
           
-          
+    
         })
         .expect('Content-Type', /json/)
         .set('Authorization', token)
@@ -56,27 +70,8 @@ describe('app routes', () => {
       expect(data.body).toEqual(expectation);
     });
 
-    test('gets a todo', async() => {
 
-      const expectation = [
-        {
-          id: expect.any(Number),
-          chore: 'get a new bike',
-          completed: false,
-          owner_id: expect.any(Number),
-        },
-      ];
-
-      const data = await fakeRequest(app)
-        .get('/api/todo')
-        .expect('Content-Type', /json/)
-        .set('Authorization', token)
-        .expect(200);
-
-      expect(data.body).toEqual(expectation);
-    });   
-
-    test.skip('puts a new todo', async() => {
+    test('puts a new todo', async() => {
 
       const expectation = [
         {
@@ -86,9 +81,8 @@ describe('app routes', () => {
           owner_id: expect.any(Number)
         }
       ];
-      // const todo6 = await fakeRequest(app).get('/api/todo/').set('Authorization', token);
       const data = await fakeRequest(app)
-        .put('/todo/1')
+        .put('api/todo/5')
         .set('Authorization', token)
         .send({
           completed: true,
